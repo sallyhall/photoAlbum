@@ -6,15 +6,7 @@ var mainText = "";
 var buttonText = "";
 
 $(document).ready(function(){
-  _.each(albums,function (album) {
-    mainText = imgTemplate(album.photos[0]);
-    buttonText = buttonTemplate(album);
-    $(".albums").append(mainText);
-    $("aside").append(buttonText);
-  });
-  $("aside").addClass("hidden");
-  bindButtonClickEvent();
-  bindAlbumClickEvent();
+  displayAlbumCovers();
 });
 
 //when you click an album cover, hide the albums and show the pictures in that album
@@ -34,10 +26,7 @@ var bindButtonClickEvent = function() {
   $("button").on("click",function (event) {
     event.preventDefault();
     $(".photos").html("");
-    var displayedAlbumName = $(this).text();
-    if (displayedAlbumName.split(" ").length>1){
-      displayedAlbumName = displayedAlbumName.split(" ")[2];
-    }
+    var displayedAlbumName = $(this).attr("rel");
     displayAlbum(displayedAlbumName);
   });
 };
@@ -45,8 +34,22 @@ var bindButtonClickEvent = function() {
 var bindPhotoClickEvent = function(){
   $(".photos img").on("click",function(event) {
     event.preventDefault();
-    displayPhoto($(this));
+    displayPhoto($(this).parent());
   });
+};
+
+var displayAlbumCovers = function(){
+    _.each(albums,function (album) {
+      mainText = imgTemplate(album.photos[0]);
+      buttonText = buttonTemplate(album);
+      $(".albums").append(mainText);
+      //change image caption to album title
+      $( "p:last" )[0].textContent=album.albumTitle;
+      $("aside").append(buttonText);
+    });
+    $("aside").addClass("hidden");
+    bindButtonClickEvent();
+    bindAlbumClickEvent();
 };
 
 var displayAlbum = function(albumName){

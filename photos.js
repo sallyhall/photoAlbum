@@ -1,5 +1,6 @@
 var albums = [{
     albumName: "cristacarmen",
+    albumTitle: "Crista And Carmen",
     photos: [{
         imgURL: "cristacarmen/photo1.jpg",
         photoTitle: "Crista"
@@ -30,6 +31,7 @@ var albums = [{
     }]
 }, {
     albumName: "halloween",
+    albumTitle: "Halloween 2004",
     photos: [{
         imgURL: "halloween/photo1.jpg",
         photoTitle: "Halloween"
@@ -51,6 +53,7 @@ var albums = [{
     }]
 }, {
     albumName: "rebecca",
+    albumTitle: "Baby Rebecca",
     photos: [{
         imgURL: "rebecca/photo1.jpg",
         photoTitle: "Baby Becca"
@@ -75,6 +78,7 @@ var albums = [{
     }]
 }, {
     albumName: "springBreak",
+    albumTitle: "Spring Break 2014",
     photos: [{
         imgURL: "springBreak/photo1.jpg",
         photoTitle: "Cousins"
@@ -87,6 +91,7 @@ var albums = [{
     }]
 }, {
     albumName: "thanksgiving",
+    albumTitle: "Thanksgiving 2009",
     photos: [{
         imgURL: "thanksgiving/photo1.jpg",
         photoTitle: "Leaves"
@@ -105,6 +110,7 @@ var albums = [{
     }]
 }, {
     albumName: "the80s",
+    albumTitle: "Sally and Shay",
     photos: [{
         imgURL: "the80s/photo1.jpg",
         photoTitle: "Kids"

@@ -3,8 +3,11 @@ html {
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-img {
-  width: 200px; }
+.photo img {
+  min-width: 200px;
+  min-height: 100px;
+  max-width: 100%;
+  overflow: hidden; }
 
 .photoDetails img {
   width: 800px; }
@@ -20,4 +23,23 @@ img {
 aside {
   width: 25%;
   float: left;
+  display: inline-block;
+  background-color: black; }
+
+button {
+  width: 100px;
+  border: none;
+  display: block;
+  background-color: white;
+  margin: 10px; }
+
+.photo {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
   display: inline-block; }
+
+.photoDetails .photo {
+  width: 800px;
+  height: 800px;
+  margin: auto; }
