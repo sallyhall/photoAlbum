@@ -5,26 +5,36 @@
     <title>Photo Album</title>
     <link rel="stylesheet" href="styles.css">
     <script type="text/html" id="imgTmpl">
-      <div class="photo">
-        <img src="albums/<%= imgURL %>" alt="<%= photoTitle %>">
-        <p><%= photoTitle %></p>
+      <div class="photoContainer">
+        <div class="photo">
+          <img src="albums/<%= imgURL %>" alt="<%= photoTitle %>">
+        </div>
+        <div class="caption">
+          <p><%= photoTitle %></p>
+        </div>
       </div>
     </script>
+    <script type="text/html" id="bigImgTmpl">
+      <div class="photo">
+        <img src="albums/<%= imgURL %>" alt="<%= photoTitle %>">
+      </div>
+  </script>
     <script type="text/html" id="albumBtnTmpl">
-      <button rel = "<%= albumName %>"><%= albumTitle %></button>
+      <button class="albumButton" rel = "<%= albumName %>"><%= albumTitle %></button>
     </script>
   </head>
   <body>
+    <header>
+      <h1 class="pageTitle">My Albums</h1>
+    </header>
     <aside class = "hidden">
     </aside>
-    <div class="wrapper">
-      <section class="albums">
-      </section>
-      <section class="photos hidden">
-      </section>
-      <section class="photoDetails hidden">
-      </section>
-    </div>
+    <section class="albums">
+    </section>
+    <section class="photos hidden">
+    </section>
+    <section class="photoDetails hidden">
+    </section>
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>

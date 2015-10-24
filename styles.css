@@ -3,31 +3,40 @@ html {
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-.photo img {
-  min-width: 200px;
-  min-height: 100px;
-  max-width: 100%;
-  overflow: hidden; }
+body {
+  background-color: black;
+  margin: 0;
+  padding: 0; }
 
-.photoDetails img {
-  width: 800px; }
+.photos, .albums {
+  background-color: white;
+  text-align: center; }
+
+.albums {
+  padding: 0 10%; }
+
+.photoDetails {
+  background-color: darkgray;
+  text-align: center; }
 
 .hidden {
   display: none; }
 
-.wrapper {
-  width: 70%;
-  margin: auto;
-  display: inline-block; }
+.photos {
+  width: 85%;
+  float: right;
+  text-align: center; }
 
 aside {
-  width: 25%;
+  width: 15%;
   float: left;
   display: inline-block;
   background-color: black; }
 
 button {
-  width: 100px;
+  width: 175px;
+  height: 30px;
+  font-size: 1em;
   border: none;
   display: block;
   background-color: white;
@@ -37,9 +46,40 @@ button {
   width: 200px;
   height: 200px;
   overflow: hidden;
-  display: inline-block; }
+  margin: auto;
+  margin-top: 50px; }
+
+img {
+  width: 100%; }
+
+.photoContainer {
+  display: inline-block;
+  border: 2px solid black;
+  width: 300px;
+  margin: 25px; }
 
 .photoDetails .photo {
-  width: 800px;
-  height: 800px;
-  margin: auto; }
+  width: 600px;
+  height: 600px;
+  overflow: hidden; }
+
+.photoDetails button {
+  width: 250px;
+  border-radius: 3px;
+  position: absolute;
+  margin: 20px; }
+
+header {
+  width: 100%;
+  color: white;
+  text-align: center;
+  margin-top: 30px;
+  padding-bottom: 30px; }
+
+h1 {
+  margin: 0; }
+
+.leftnav, .rightnav {
+  font-size: 4em;
+  color: white;
+  display: inline-block; }
