@@ -1,172 +1,193 @@
-var imgTemplate = _.template($("#imgTmpl").html());
-var buttonTemplate = _.template($("#albumBtnTmpl").html());
-var bigImgTemplate = _.template($("#bigImgTmpl").html());
-var mainText = "";
-var buttonText = "";
+var albumPage = {
+  init: function () {
+    albumPage.styling();
+    albumPage.events();
+  },
+  events: function () {
+    //when you click an album cover, hide the albums and show the pictures in that album
+    $(".albums").on("click","img",function (event) {
+      event.preventDefault();
+      //get album name from album cover url
+      var displayedAlbumName = $(this).attr('src').split("/")[1];
+      albumPage.displayAlbum(displayedAlbumName);
+    });
+    //when you click an album button, display that album
+    $("aside").on("click","button",function (event) {
+      event.preventDefault();
+      if (_.contains(this.classList,"returnHome")){
+        event.preventDefault();
+        //display album covers
+        albumPage.displayAlbumCovers();
+        albumPage.formatHeader("covers");
+      }else{
+        //get album name from button rel
+        var displayedAlbumName = $(this).attr("rel");
+        albumPage.displayAlbum(displayedAlbumName);
+      }
+    });
+    //when you click on the return to album button, display the album
+    $(".photoDetails").on("click","button",function (event) {
+      event.preventDefault();
+      //get album name from button rel
+      var displayedAlbumName = $(this).attr("rel");
+      albumPage.displayAlbum(displayedAlbumName);
+    });
+    //when you click a photo in an album, display that photo large
+    $(".photos").on("click","img",function(event) {
+      event.preventDefault();
+
+      //retrieve the album that contains the photo
+      var displayedAlbum = _.find(albums,function (album) {
+        return (album.albumTitle === $(".pageTitle").text());
+      });
+      var photoIndex;
+      var clickedPhoto = $(this);
+      //find which photo index this photo is in that album
+      _.each(displayedAlbum.photos,function (element, index,array) {
+        console.log(clickedPhoto.attr("src"));
+        if ("albums/"+element.imgURL===clickedPhoto.attr("src")){
+           photoIndex = index;
+        }
+      });
+
+      //display the photo detail
+      albumPage.displayPhoto(displayedAlbum,photoIndex);
+      albumPage.createNavArrows(displayedAlbum,photoIndex);
+      //set header text to photo title
+      $(".pageTitle").text($(this).attr("alt"));
+      albumPage.formatHeader("photoDetail");
+    });
+    $(".photoDetails").on("click",".nav",function(){
+      var clickedImage = $(this)[0];
+      photoIndex = Number(clickedImage.id);
+      var displayedAlbum = _.find(albums,function (album) {
+        return (album.albumName === clickedImage.attributes.rel.value);
+      });
+      if(_.contains(clickedImage.classList,"rightnav")){
+        if (photoIndex===displayedAlbum.photos.length-1){
+          photoIndex=0;
+        }else{
+          photoIndex++;
+        }
+      } else{
+        if (photoIndex===0){
+          photoIndex=displayedAlbum.photos.length-1;
+        }else{
+          photoIndex--;
+        }
+      }
+      albumPage.displayPhoto(displayedAlbum,photoIndex);
+      albumPage.createNavArrows(displayedAlbum,photoIndex);
+    });
+  },
+  styling: function () {
+    albumPage.displayAlbumCovers();
+  },
+  displayAlbumCovers : function(){
+    //displays albums page, hides sidebar, resets sidebar text
+    albumPage.showView("albums");
+    //for each album, format cover image and add to page.
+    _.each(albums,function (album) {
+      $(".albums").append(albumPage.loadTemplate("imgTmpl",album.photos[0]));
+      //format button text and add to sidebar
+      $("aside").append(albumPage.loadTemplate("albumBtnTmpl",(album)));
+      //change image caption to album title
+      $("p:last")[0].textContent=album.albumTitle;
+    });
+    //add return home button to sidebar
+    $("aside").append("<button class = 'returnHome'>Home</button>");
+  },
+  displayAlbum : function(albumName){
+   //hide albums page and photodetails page, show photos page and sidebar. reset
+   //photos page html
+   albumPage.showView("photos");
+   //retrieve album object for the given album name
+   var displayedAlbum = _.find(albums,function (album) {
+     return (album.albumName === albumName);
+   });
+   //for each photo in the album, create image template and append to photo page
+   _.each(displayedAlbum.photos, function (photo) {
+     $(".photos").append(albumPage.loadTemplate("imgTmpl",(photo)));
+   });
+   //set page header to album title
+   $(".pageTitle").text(displayedAlbum.albumTitle);
+   albumPage.formatHeader("album");
+  },
+  displayPhoto : function (displayedAlbum,photoIndex) {
+   //hide photos page and sidebar, display photo detail page
+   albumPage.showView("photoDetails");
+
+   //create back to album button, and bind event to it
+   $(".photoDetails").html(albumPage.loadTemplate("albumBtnTmpl",(displayedAlbum)));
+   $(".photoDetails button").prepend(" < Back to ");
+
+   //create image html and add to page
+   $(".photoDetails").append(albumPage.loadTemplate("bigImgTmpl",displayedAlbum.photos[photoIndex]));
+  },
+  createNavArrows : function(displayedAlbum,photoIndex){
+   $(".photoDetails").prepend("<div class='nav rightnav' rel=" + displayedAlbum.albumName + " id="+photoIndex+">></div>");
+   $(".photoDetails").prepend("<div class='nav leftnav'rel="+ displayedAlbum.albumName + " id="+photoIndex+"><</div>");
+   //add events to left and right nav buttons
+  },
+  formatHeader : function(display){
+    if (display==="covers"){
+      //reset styling for header
+      $("body").css("background-color","white");
+      $("header").css({
+        "color": "white",
+        "width": "100%",
+        "background-color": "black",
+        "float": "none",
+        "margin-top": "0",
+        "padding-bottom": "30px"
+      });
+      $(".pageTitle").text("My Albums");
+    }else if (display==="photoDetail"){
+      //format header
+      $("header").css({
+        "background-color": "darkgray",
+        "width":"100%"
+      });
+      $("body").css("background-color","darkgray");
+    }else if (display==="album"){
+      //format header/body css
+      $("body").css("background-color","black");
+      $("header").css({
+        "color": "black",
+        "width": "85%",
+        "background-color": "white",
+        "float": "right",
+        "margin-top": "0",
+        "padding-top": "30px"
+      });
+    }
+  },
+  showView : function (view) {
+    $(".albums").addClass("hidden");
+    $(".photos").addClass("hidden");
+    $(".photoDetails").addClass("hidden");
+    $("aside").addClass("hidden");
+
+    $("."+view).removeClass("hidden");
+    if(view==="photos"){
+      $("aside").removeClass("hidden");
+    }
+    if(view==="albums"){
+      $("aside").html("");
+    }
+
+    $("."+view).html("");
+    },
+  getTemplate: function (name) {
+    return _.template(templates[name]);
+  },
+  loadTemplate: function (name, val) {
+    var tmpl = albumPage.getTemplate(name);
+    return tmpl(val);
+  }
+};
 
 //when the page loads, display album covers
 $(document).ready(function(){
-  displayAlbumCovers();
+  albumPage.init();
 });
-
-//when you click an album cover, hide the albums and show the pictures in that album
-var bindAlbumClickEvent = function () {
-  $(".albums img").on("click",function (event) {
-    event.preventDefault();
-    //get album name from album cover url
-    var displayedAlbumName = $(this).attr('src').split("/")[1];
-    displayAlbum(displayedAlbumName);
-  });
-};
-
-//when you click an album button, display that album
-var bindButtonClickEvent = function() {
-  $(".albumButton").on("click",function (event) {
-    event.preventDefault();
-    //get album name from button rel
-    var displayedAlbumName = $(this).attr("rel");
-    displayAlbum(displayedAlbumName);
-  });
-};
-
-
-//when you click a photo in an album, display that photo large
-var bindPhotoClickEvent = function(){
-  $(".photos img").on("click",function(event) {
-    event.preventDefault();
-
-    //retrieve the album that contains the photo
-    var displayedAlbum = _.find(albums,function (album) {
-      return (album.albumTitle === $(".pageTitle").text());
-    });
-    //find which photo index tis photo is in that album
-    var photoIndex = $(".photos").children().index($(this).parent().parent());
-    //display the photo detail
-    displayPhoto(displayedAlbum,photoIndex);
-    //set header text to photo title
-    $(".pageTitle").text($(this).attr("alt"));
-    //format header
-    $("header").css({
-      "background-color": "darkgray",
-      "width":"100%"
-    });
-    $("body").css("background-color","darkgray");
-  });
-};
-
-var displayAlbumCovers = function(){
-  //displays albums page, hides sidebar, resets sidebar text
-  $("aside").addClass("hidden");
-  $(".albums").removeClass("hidden");
-  $("aside").html("");
-
-  //for each album, format cover image and add to page.
-  _.each(albums,function (album) {
-
-    mainText = imgTemplate(album.photos[0]);
-    $(".albums").append(mainText);
-
-    //format buttontext and add to sidebar
-    buttonText = buttonTemplate(album);
-    $("aside").append(buttonText);
-
-    //change image caption to album title
-    $( "p:last" )[0].textContent=album.albumTitle;
-  });
-
-  //add return home button to sidebar
-  $("aside").append("<button class = 'returnHome'>Home</button>");
-
-  //set return home on click event
-  $(".returnHome").on("click",function (event) {
-    event.preventDefault();
-    //display album covers
-    displayAlbumCovers();
-
-    //reset styling for header
-    $("body").css("background-color","white");
-    $("header").css({
-      "color": "white",
-      "width": "100%",
-      "background-color": "black",
-      "float": "none",
-      "margin-top": "0",
-      "padding-bottom": "30px"
-    });
-    $(".pageTitle").text("My Albums");
-  });
-  //bind click events for buttons and album cover
-  bindButtonClickEvent();
-  bindAlbumClickEvent();
-};
-
-var displayAlbum = function(albumName){
-  //hide albums page and photodetails page, show photos page and sidebar. reset
-  //photos page html
-  $(".albums").addClass("hidden");
-  $(".photoDetails").addClass("hidden");
-  $(".photos").removeClass("hidden");
-  $("aside").removeClass("hidden");
-  $(".photos").html("");
-
-  //retrieve album object for the given album name
-  var displayedAlbum = _.find(albums,function (album) {
-    return (album.albumName === albumName);
-  });
-
-  //for each photo in the album, create image template and append to photo page
-  _.each(displayedAlbum.photos, function (photo) {
-    mainText = imgTemplate(photo);
-    $(".photos").append(mainText);
-  });
-  //bind photo click event to all pictures
-  bindPhotoClickEvent();
-  //set page header to album title
-  $(".pageTitle").text(displayedAlbum.albumTitle);
-  //format header/body css
-  $("body").css("background-color","black");
-  $("header").css({
-    "color": "black",
-    "width": "85%",
-    "background-color": "white",
-    "float": "right",
-    "margin-top": "0",
-    "padding-top": "30px"
-  });
-};
-
-var displayPhoto = function (displayedAlbum,photoIndex) {
-  //hide photos page and sidebar, display photo detail page
-  $(".photos").addClass("hidden");
-  $(".photoDetails").removeClass("hidden");
-  $("aside").addClass("hidden");
-  //clear html from photo detail page
-  $(".photoDetails").html("");
-
-  //create back to album button, and bind event to it
-  buttonText = buttonTemplate(displayedAlbum);
-  $(".photoDetails").html(buttonText);
-  $(".photoDetails button").prepend(" < Back to ");
-  bindButtonClickEvent();
-
-  //create image html and add to page
-  $(".photoDetails").append(bigImgTemplate(displayedAlbum.photos[photoIndex]));
-  //create left and right nave buttons and add to page
-  $(".photoDetails").prepend("<div class='rightnav'>></div>");
-  $(".photoDetails").prepend("<div class='leftnav'><</div>");
-  //add events to left and right nav buttons
-  $(".rightnav").on("click",function(){
-    if (photoIndex===displayedAlbum.photos.length-1){
-      displayPhoto(displayedAlbum,0);
-    }else{
-      displayPhoto(displayedAlbum,photoIndex+1);
-    }
-  });
-  $(".leftnav").on("click",function(){
-    if (photoIndex===0){
-      displayPhoto(displayedAlbum,displayedAlbum.photos.length-1);
-    }else{
-      displayPhoto(displayedAlbum,photoIndex-1);
-    }
-  });
-};

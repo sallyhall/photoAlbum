@@ -4,24 +4,6 @@
     <meta charset="utf-8">
     <title>Photo Album</title>
     <link rel="stylesheet" href="styles.css">
-    <script type="text/html" id="imgTmpl">
-      <div class="photoContainer">
-        <div class="photo">
-          <img src="albums/<%= imgURL %>" alt="<%= photoTitle %>">
-        </div>
-        <div class="caption">
-          <p><%= photoTitle %></p>
-        </div>
-      </div>
-    </script>
-    <script type="text/html" id="bigImgTmpl">
-      <div class="photo">
-        <img src="albums/<%= imgURL %>" alt="<%= photoTitle %>">
-      </div>
-  </script>
-    <script type="text/html" id="albumBtnTmpl">
-      <button class="albumButton" rel = "<%= albumName %>"><%= albumTitle %></button>
-    </script>
   </head>
   <body>
     <header>
@@ -35,11 +17,10 @@
     </section>
     <section class="photoDetails hidden">
     </section>
-
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
-
     <script src="photos.js" charset="utf-8"></script>
+    <script src="albumTemplates.js" charset="utf-8"></script>
     <script src="main.js" charset="utf-8"></script>
   </body>
 </html>
