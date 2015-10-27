@@ -14,7 +14,7 @@ var albumPage = {
     //when you click an album button, display that album
     $("aside").on("click","button",function (event) {
       event.preventDefault();
-      if (_.contains(this.classList,"returnHome")){
+      if ($(this).hasClass("returnHome")){
         event.preventDefault();
         //display album covers
         albumPage.displayAlbumCovers();
@@ -63,7 +63,7 @@ var albumPage = {
       var displayedAlbum = _.find(albums,function (album) {
         return (album.albumName === clickedImage.attributes.rel.value);
       });
-      if(_.contains(clickedImage.classList,"rightnav")){
+      if($(clickedImage).hasClass("rightnav")){
         if (photoIndex===displayedAlbum.photos.length-1){
           photoIndex=0;
         }else{
@@ -168,7 +168,11 @@ var albumPage = {
     $(".photoDetails").addClass("hidden");
     $("aside").addClass("hidden");
 
+
     $("."+view).removeClass("hidden");
+    $("."+view).html("");
+
+
     if(view==="photos"){
       $("aside").removeClass("hidden");
     }
@@ -176,7 +180,6 @@ var albumPage = {
       $("aside").html("");
     }
 
-    $("."+view).html("");
     },
   getTemplate: function (name) {
     return _.template(templates[name]);
@@ -187,7 +190,6 @@ var albumPage = {
   }
 };
 
-//when the page loads, display album covers
 $(document).ready(function(){
   albumPage.init();
 });
