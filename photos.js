@@ -2,31 +2,31 @@ var albums = [{
     albumName: "cristacarmen",
     albumTitle: "Crista And Carmen",
     photos: [{
-        imgURL: "cristacarmen/photo1.jpg",
+        imgURL: "album1/photo1.jpg",
         photoTitle: "Crista"
     }, {
-        imgURL: "cristacarmen/photo2.jpg",
+        imgURL: "album1/photo2.jpg",
         photoTitle: "Christmas"
     }, {
-        imgURL: "cristacarmen/photo3.jpg",
+        imgURL: "album1/photo3.jpg",
         photoTitle: "Children Yelling"
     }, {
-        imgURL: "cristacarmen/photo4.jpg",
+        imgURL: "album1/photo4.jpg",
         photoTitle: "Children Smiling"
     }, {
-        imgURL: "cristacarmen/photo5.jpg",
+        imgURL: "album1/photo5.jpg",
         photoTitle: "Hug"
     }, {
-        imgURL: "cristacarmen/photo6.jpg",
+        imgURL: "album1/photo6.jpg",
         photoTitle: "Girls"
     }, {
-        imgURL: "cristacarmen/photo7.jpg",
+        imgURL: "album1/photo7.jpg",
         photoTitle: "Carmen"
     }, {
-        imgURL: "cristacarmen/photo8.jpg",
+        imgURL: "album1/photo8.jpg",
         photoTitle: "Carmen"
     }, {
-        imgURL: "cristacarmen/photo9.jpg",
+        imgURL: "album1/photo9.jpg",
         photoTitle: "Crista"
     }]
 }, {

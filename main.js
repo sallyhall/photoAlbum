@@ -7,8 +7,15 @@ var albumPage = {
     //when you click an album cover, hide the albums and show the pictures in that album
     $(".albums").on("click","img",function (event) {
       event.preventDefault();
-      //get album name from album cover url
-      var displayedAlbumName = $(this).attr('src').split("/")[1];
+      //get album name from album cover caption
+
+      var title = $(this).parent().next().text();
+      var displayedAlbum = _.find(albums, function(album){
+        return (album.albumTitle === title);
+      });
+      var displayedAlbumName = displayedAlbum.albumName;
+
+
       albumPage.displayAlbum(displayedAlbumName);
     });
     //when you click an album button, display that album
@@ -44,7 +51,6 @@ var albumPage = {
       var clickedPhoto = $(this);
       //find which photo index this photo is in that album
       _.each(displayedAlbum.photos,function (element, index,array) {
-        console.log(clickedPhoto.attr("src"));
         if ("albums/"+element.imgURL===clickedPhoto.attr("src")){
            photoIndex = index;
         }
@@ -61,7 +67,7 @@ var albumPage = {
       var clickedImage = $(this)[0];
       photoIndex = Number(clickedImage.id);
       var displayedAlbum = _.find(albums,function (album) {
-        return (album.albumName === clickedImage.attributes.rel.value);
+        return (album.albumName === $(clickedImage).attr("rel"));
       });
       if($(clickedImage).hasClass("rightnav")){
         if (photoIndex===displayedAlbum.photos.length-1){
@@ -92,7 +98,7 @@ var albumPage = {
       //format button text and add to sidebar
       $("aside").append(albumPage.loadTemplate("albumBtnTmpl",(album)));
       //change image caption to album title
-      $("p:last")[0].textContent=album.albumTitle;
+      $($(".albums p:last")[0]).text(album.albumTitle);
     });
     //add return home button to sidebar
     $("aside").append("<button class = 'returnHome'>Home</button>");
@@ -168,10 +174,8 @@ var albumPage = {
     $(".photoDetails").addClass("hidden");
     $("aside").addClass("hidden");
 
-
     $("."+view).removeClass("hidden");
     $("."+view).html("");
-
 
     if(view==="photos"){
       $("aside").removeClass("hidden");
