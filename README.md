@@ -1,5 +1,7 @@
 # Photo albums
 
+Class assignment. View it live at http://sallykingston.me/photoAlbum/
+
 ## Description
 You're going to create a gallery application which will allow the user to view their albums as well as the individual photos contained within, as a single page application (SPA).
 
